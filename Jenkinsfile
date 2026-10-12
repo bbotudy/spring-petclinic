@@ -47,7 +47,7 @@ pipeline {
             post {
                 always {
                     sh '''
-                    docker rmi -f spring-petclinic:latest:${BUILD_NUMBER}
+                    docker rmi -f spring-petclinic:${BUILD_NUMBER}
                     docker rmi -f ldy88/spring-petclinic:latest
                     '''
                 }
