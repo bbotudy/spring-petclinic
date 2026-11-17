@@ -17,15 +17,17 @@ pipeline {
                 branch: 'main'
             }
         }
+
         // Maven을 이용한 Build
-        stage('Maven Build'){
+        stage('Maven Build') {
             steps {
                 echo 'Maven Build'
                 sh 'mvn -Dmaven.test.failure.ignore=true clean package'
             }
         }
+
         // Docker Image 생성
-        stage ('Docker Image Create') {
+        stage('Docker Image Create') {
             steps {
                 echo 'Docker Image Create'
                 sh '''
@@ -34,14 +36,12 @@ pipeline {
                 '''
             }
         }
+
         // Docker hub Image Push
         stage('Docker Image Push') {
             steps {
                 echo 'Docker Image Push'
-                // Docker Login
                 sh 'echo ${DOCKERHUB_CRED_PSW} | docker login -u ${DOCKERHUB_CRED_USR} --password-stdin'
-
-                // Docker Hub Push
                 sh 'docker image push ldy88/spring-petclinic:latest'
             }
             post {
@@ -53,37 +53,7 @@ pipeline {
                 }
             }
         }
-        
-               // WAS01 배포
+
+        // WAS01 배포
         stage('Deploy WAS01') {
             steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'was01',
-                transfers: [sshTransfer(
-                execCommand: '''
-                docker rm -f spring-petclinic || true
-                docker pull ldy88/spring-petclinic:latest
-                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
-                ''',
-                execTimeout: 120000)],
-                verbose: true)])
-            }
-        }
-
-        // WAS02 배포
-        stage('Deploy WAS02') {
-            steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'was02',
-                transfers: [sshTransfer(
-                execCommand: '''
-                docker rm -f spring-petclinic || true
-                docker pull ldy88/spring-petclinic:latest
-                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
-                ''',
-                execTimeout: 120000)],
-                verbose: true)])
-            }
-        }
-            }
-        }            
-    }
-}
