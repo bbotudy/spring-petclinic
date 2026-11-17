@@ -57,3 +57,31 @@ pipeline {
         // WAS01 배포
         stage('Deploy WAS01') {
             steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'was01',
+                transfers: [sshTransfer(
+                execCommand: '''
+                docker rm -f spring-petclinic || true
+                docker pull ldy88/spring-petclinic:latest
+                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
+                ''',
+                execTimeout: 120000)],
+                verbose: true)])
+            }
+        }
+
+        // WAS02 배포
+        stage('Deploy WAS02') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'was02',
+                transfers: [sshTransfer(
+                execCommand: '''
+                docker rm -f spring-petclinic || true
+                docker pull ldy88/spring-petclinic:latest
+                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
+                ''',
+                execTimeout: 120000)],
+                verbose: true)])
+            }
+        }
+    }
+}
