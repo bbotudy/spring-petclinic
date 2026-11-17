@@ -58,7 +58,7 @@ pipeline {
         // WAS01 배포
         stage('Deploy WAS01') {
             steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'was01',
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'WAS01',
                 transfers: [sshTransfer(
                 execCommand: '''
                 docker rm -f spring-petclinic || true
@@ -73,7 +73,7 @@ pipeline {
         // WAS02 배포
         stage('Deploy WAS02') {
             steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'was02',
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'WAS02',
                 transfers: [sshTransfer(
                 execCommand: '''
                 docker rm -f spring-petclinic || true
