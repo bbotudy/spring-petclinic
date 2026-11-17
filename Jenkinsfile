@@ -63,7 +63,7 @@ pipeline {
                 execCommand: '''
                 docker rm -f spring-petclinic || true
                 docker pull ldy88/spring-petclinic:latest
-                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
+                docker run -itd -p 8080:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
                 ''',
                 execTimeout: 120000)],
                 verbose: true)])
@@ -78,7 +78,7 @@ pipeline {
                 execCommand: '''
                 docker rm -f spring-petclinic || true
                 docker pull ldy88/spring-petclinic:latest
-                docker run -itd -p 80:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
+                docker run -itd -p 8080:8080 --name=spring-petclinic ldy88/spring-petclinic:latest
                 ''',
                 execTimeout: 120000)],
                 verbose: true)])
